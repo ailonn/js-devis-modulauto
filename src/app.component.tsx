@@ -10,6 +10,7 @@ function Todo() {
         'comparaison abonné / non abonné',
         'appliqué réduction long trajet (> 5j 35% tarif horaire)'
         , 'test sur les prix'
+        , 'mettre à jour le README'
     ];
     return <>
         TODO :<br />
