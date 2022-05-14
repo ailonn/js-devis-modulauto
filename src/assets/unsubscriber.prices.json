@@ -1,0 +1,50 @@
+﻿[
+    {
+        "category": "A",
+        "duration": {
+            "hour": 4,
+            "sunday": 3
+        },
+        "distance": {
+            "underHundred": 0.42,
+            "underThreeHundreds": 0.29,
+            "overThreeHundreds": 0.24
+        }
+    },
+    {
+        "category": "B",
+        "duration": {
+            "hour": 5,
+            "sunday": 4
+        },
+        "distance": {
+            "underHundred": 0.47,
+            "underThreeHundreds": 0.29,
+            "overThreeHundreds": 0.24
+        }
+    },
+    {
+        "category": "C",
+        "duration": {
+            "hour": 6,
+            "sunday": 5
+        },
+        "distance": {
+            "underHundred": 0.47,
+            "underThreeHundreds": 0.29,
+            "overThreeHundreds": 0.24
+        }
+    },
+    {
+        "category": "D",
+        "duration": {
+            "hour": 7,
+            "sunday": 7
+        },
+        "distance": {
+            "underHundred": 0.5,
+            "underThreeHundreds": 0.29,
+            "overThreeHundreds": 0.24
+        }
+    }
+]
