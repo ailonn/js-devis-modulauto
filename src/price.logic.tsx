@@ -17,28 +17,43 @@ type ModulAutoPriceRates = {
     }
 };
 
+export type ModulAutoTravelCost = {
+    subscriber: {
+        full: number
+    },
+    unsubscriber: {
+        full: number
+    }
+}
+
+function travelDetailsByPriceRate(priceRates: ModulAutoPriceRates, distanceSorted: DistanceSplitted, durationSorted: ModulAutoTravelSegment[]): number {
+    return distanceSorted.over * priceRates.distance.overThreeHundreds
+        + distanceSorted.underThreeHundreds * priceRates.distance.underThreeHundreds
+        + distanceSorted.underHundred * priceRates.distance.underHundred
+        + durationSorted.reduce((agg, { dayHourCount, nightHourCount, isSunday }) => {
+            const hourPrice = isSunday ? priceRates.duration.sunday : priceRates.duration.hour;
+            if (dayHourCount + nightHourCount >= 10) {
+                return agg + 10 * hourPrice;
+            }
+            return agg + hourPrice * dayHourCount + (nightHourCount * hourPrice) * 0.5;
+        }, 0)
+        + 1.5;
+}
+
 export function applyPrices(
     cat: string,
     subscriber: boolean,
     distanceSorted: DistanceSplitted,
-    durationSorted: ModulAutoTravelSegment[]): number | any {
+    durationSorted: ModulAutoTravelSegment[]): ModulAutoTravelCost {
     console.log('subscriber', subscriber)
-    const priceRates: ModulAutoPriceRates = (subscriber ? subscriberPrices : unsubscriberPrices).filter(({ category }) => category === cat)[0];
+    const subscriberPriceRates: ModulAutoPriceRates = subscriberPrices.filter(({ category }) => category === cat)[0];
+    const unsubscriberPriceRates: ModulAutoPriceRates = unsubscriberPrices.filter(({ category }) => category === cat)[0];
     return {
-        cost: distanceSorted.over * priceRates.distance.overThreeHundreds
-            + distanceSorted.underThreeHundreds * priceRates.distance.underThreeHundreds
-            + distanceSorted.underHundred * priceRates.distance.underHundred
-            + durationSorted.reduce((agg, { dayHourCount, nightHourCount, isSunday }) => {
-                const hourPrice = isSunday ? priceRates.duration.sunday : priceRates.duration.hour;
-                if (dayHourCount + nightHourCount >= 10) {
-                    return agg + 10 * hourPrice;
-                }
-                return agg + hourPrice * dayHourCount + (nightHourCount * hourPrice) * 0.5;
-            }, 0),
-        distanceSorted,
-        durationSorted,
-        priceRates,
-        cat,
-        subscriber
+        subscriber: {
+            full: travelDetailsByPriceRate(subscriberPriceRates, distanceSorted, durationSorted)
+        },
+        unsubscriber: {
+            full: travelDetailsByPriceRate(unsubscriberPriceRates, distanceSorted, durationSorted)
+        }
     };
 }

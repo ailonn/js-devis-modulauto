@@ -2,17 +2,20 @@ import { useState } from 'react';
 import { Form, FormData } from './form.component';
 import { segmentTravelDurationByArray } from './duration.logic';
 import { splitDistance } from './distance.logic';
-import { applyPrices } from './price.logic';
+import { applyPrices, ModulAutoTravelCost } from './price.logic';
 
 function Todo() {
     const todo: string[] = [
-        'détail tarifaire',
-        'comparaison abonné / non abonné',
+        'détail tarifaire - optionnel',
+        'comparaison abonné / non abonné -- v1',
         'appliqué réduction long trajet (> 5j 35% tarif horaire)'
         , 'test sur les prix'
         , 'mettre à jour le README'
+        , 'accessibilité'
+        , 'reprendre le composant formulaire, il est quand même bien moche'
     ];
     return <>
+        <br />
         TODO :<br />
         {
             todo.map((task) =>
@@ -25,7 +28,7 @@ function Todo() {
 }
 
 function App() {
-    const [result, applyResult] = useState<null | number>(null);
+    const [result, applyResult] = useState<null | ModulAutoTravelCost>(null);
 
     function computeTravelCost(state: FormData) {
         const {
@@ -37,15 +40,15 @@ function App() {
         } = state;
         const distanceSorted = splitDistance(+km);
         const durationSorted = segmentTravelDurationByArray(start, end);
-        const details = applyPrices(cat, subscriber, distanceSorted, durationSorted);
-        applyResult(details.cost + 1.5);
-        console.table({ ...details, cost: details.cost + 1.5 });
+        const details: ModulAutoTravelCost = applyPrices(cat, subscriber, distanceSorted, durationSorted);
+        applyResult(details);
+        console.table({ ...details });
     }
 
     return (
         <div className="App">
             {Form({ applyResult: computeTravelCost })}
-            {result ? `le voyage a couté : ${result} €` : null}
+            {result ? `le voyage a couté : ${result.subscriber.full} € pour un abonnée et ${result.unsubscriber.full} € pour un non abonnée.` : null}
             {Todo()}
         </div>
     );
