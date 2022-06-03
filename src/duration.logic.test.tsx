@@ -12,7 +12,6 @@ type SegmentTravelAggregationType = {
 
 function segmentTravelDuration(start: DateTime, end: DateTime): SegmentTravelAggregationType {
     const segments = segmentTravelDurationByArray(start.startOf('minute'), end.startOf('minute'));
-    console.table(segments);
     return segments.reduce((agg, { dayHourCount, nightHourCount, isSunday }) => {
         if (dayHourCount + nightHourCount >= 10) {
             if (isSunday) {
@@ -105,8 +104,6 @@ describe('segmentTravelDuration should segment the travel interval between domai
         test('detect a travel of 2 days when its duration exceed 24 hours', () => {
             const start = DateTime.fromISO("2022-05-09T12:12:00.000+02:00");
             const end = DateTime.fromISO("2022-05-10T12:12:00.000+02:00");
-            console.log(start.toObject());
-            console.log(end.toObject());
             expect(segmentTravelDuration(start, end))
                 .toEqual({
                     hours: 0,
@@ -121,8 +118,6 @@ describe('segmentTravelDuration should segment the travel interval between domai
         test('detect a travel of 1 day and 1 sunday when its duration exceed 24 hours', () => {
             const start = DateTime.fromISO("2022-05-08T12:12:00.000+02:00");
             const end = DateTime.fromISO("2022-05-09T12:12:00.000+02:00");
-            console.log(start.toObject());
-            console.log(end.toObject());
             expect(segmentTravelDuration(start, end))
                 .toEqual({
                     hours: 0,

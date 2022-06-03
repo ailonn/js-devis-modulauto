@@ -7,8 +7,7 @@ export type FormData = {
     km: number,
     cat: string,
     start: DateTime,
-    end: DateTime,
-    subscriber: boolean
+    end: DateTime
 };
 
 export function Form(props: { applyResult: Function }) {
@@ -18,14 +17,11 @@ export function Form(props: { applyResult: Function }) {
         , cat: 'A'
         , start: DateTime.now()
         , end: DateTime.now()
-        , subscriber: false
     })
     function onChange(event: any) {
         const { target: { name, value } } = event;
         if (name === 'end' || name === 'start') {
             setInputs(values => ({ ...values, [name]: DateTime.fromISO(value) }));
-        } else if (name === 'subscriber') {
-            setInputs(values => ({ ...values, [name]: value === 'oui' }));
         } else {
             setInputs(values => ({ ...values, [name]: value }));
         }
@@ -37,8 +33,6 @@ export function Form(props: { applyResult: Function }) {
     }
     return (
         <Fragment>
-            <p>payez vous une mensualité :</p>
-            {renderRadioInputs({ name: 'subscriber', values: ['oui', 'non'], onChangeMethod: onChange, required: true })}
             <p>Catégorie du véhicule:</p>
             {renderRadioInputs({ name: 'cat', values: ['A', 'B', 'C', 'D'], onChangeMethod: onChange, required: true })}
             <label htmlFor='km'>Kilomètres parcouru :</label>

@@ -35,14 +35,13 @@ function App() {
             km,
             cat,
             start,
-            end,
-            subscriber
+            end
         } = state;
         const distanceSorted = splitDistance(+km);
         const durationSorted = segmentTravelDurationByArray(start, end);
-        const details: ModulAutoTravelCost = applyPrices(cat, subscriber, distanceSorted, durationSorted);
+        const details: ModulAutoTravelCost = applyPrices(cat, distanceSorted, durationSorted);
         applyResult(details);
-        console.table({ ...details });
+        console.table(details);
     }
 
     return (

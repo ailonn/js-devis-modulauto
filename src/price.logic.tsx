@@ -42,10 +42,8 @@ function travelDetailsByPriceRate(priceRates: ModulAutoPriceRates, distanceSorte
 
 export function applyPrices(
     cat: string,
-    subscriber: boolean,
     distanceSorted: DistanceSplitted,
     durationSorted: ModulAutoTravelSegment[]): ModulAutoTravelCost {
-    console.log('subscriber', subscriber)
     const subscriberPriceRates: ModulAutoPriceRates = subscriberPrices.filter(({ category }) => category === cat)[0];
     const unsubscriberPriceRates: ModulAutoPriceRates = unsubscriberPrices.filter(({ category }) => category === cat)[0];
     return {
